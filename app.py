@@ -23,17 +23,20 @@ def load_data(test: bool = False) -> Iterator[str]:
     logging.info(f'Loading data from {filepath}')    
     return pd.read_csv(filepath, nrows=nrows)["Review"].to_list()
 
+
 def calculate_embeddings(sentences: Iterator[str]) -> ArrayLike:
     """Uses sentence transformers to calculated emebeddings"""
     model = SentenceTransformer(MODEL_NAME)
     logging.info(f'Calculating {len(sentences)} embeddings')
     return model.encode(sentences)
 
+
 def save_outputs(output_array: ArrayLike, output_filepath: str = 'embeddings.npy'):
     """Saves a numpy array to a local binary file"""    
     logging.info(f'Saving embeddings to {output_filepath}')
     np.save(output_filepath, output_array)
 
+    
 def main(test: bool = False):
     """Complete pipeline that loads text data, calculates sentence embeddings and saves the array"""
     pipe(
