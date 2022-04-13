@@ -1,0 +1,5 @@
+toolz
+pandas 
+numpy
+sentence-transformers
+typer
