@@ -4,6 +4,8 @@ WORKDIR /opt/silly-app
 
 ENV PYTHONUNBUFFERED 1
 
+VOLUME /opt/silly-app/outputs
+
 COPY requirements.txt ./
 
 RUN pip install --no-cache-dir --upgrade pip && \

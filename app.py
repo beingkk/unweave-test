@@ -12,8 +12,9 @@ import logging
 logging.getLogger().setLevel(logging.INFO)
 
 MODEL_NAME = 'paraphrase-MiniLM-L6-v2'
+OUTPUTS_FILEPATH = 'outputs/embeddings.npy'
 
-def load_data(test: bool = False) -> Iterator[str]:
+def load_tripadvisor_data(test: bool = False) -> Iterator[str]:
     """
     Loads test data, sourced from kaggle:
     https://www.kaggle.com/datasets/andrewmvd/trip-advisor-hotel-reviews
@@ -31,7 +32,7 @@ def calculate_embeddings(sentences: Iterator[str]) -> ArrayLike:
     return model.encode(sentences)
 
 
-def save_outputs(output_array: ArrayLike, output_filepath: str = 'embeddings.npy'):
+def save_outputs(output_array: ArrayLike, output_filepath: str = OUTPUTS_FILEPATH):
     """Saves a numpy array to a local binary file"""    
     logging.info(f'Saving embeddings to {output_filepath}')
     np.save(output_filepath, output_array)
@@ -41,7 +42,7 @@ def main(test: bool = False):
     """Complete pipeline that loads text data, calculates sentence embeddings and saves the array"""
     pipe(
         test,
-        load_data,
+        load_tripadvisor_data,
         calculate_embeddings,
         save_outputs
     )
