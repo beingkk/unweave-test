@@ -10,9 +10,11 @@ import typer
 from toolz.functoolz import pipe
 import logging
 logging.getLogger().setLevel(logging.INFO)
+from pathlib import Path
 
 MODEL_NAME = 'paraphrase-MiniLM-L6-v2'
-OUTPUTS_FILEPATH = 'outputs/embeddings.npy'
+OUTPUTS_PATH = Path("outputs/")
+OUTPUTS_PATH.mkdir(parents=True, exist_ok=True)
 
 def load_tripadvisor_data(test: bool = False) -> Iterator[str]:
     """
@@ -32,10 +34,10 @@ def calculate_embeddings(sentences: Iterator[str]) -> ArrayLike:
     return model.encode(sentences)
 
 
-def save_outputs(output_array: ArrayLike, output_filepath: str = OUTPUTS_FILEPATH):
+def save_outputs(output_array: ArrayLike, output_filename: str =  'embeddings.npy'):
     """Saves a numpy array to a local binary file"""    
-    logging.info(f'Saving embeddings to {output_filepath}')
-    np.save(output_filepath, output_array)
+    logging.info(f'Saving embeddings to {output_filename}')
+    np.save(OUTPUTS_PATH / output_filename, output_array)
 
     
 def main(test: bool = False):
