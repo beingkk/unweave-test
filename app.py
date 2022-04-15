@@ -11,6 +11,7 @@ from toolz.functoolz import pipe
 import logging
 logging.getLogger().setLevel(logging.INFO)
 from pathlib import Path
+import torch
 
 MODEL_NAME = 'paraphrase-MiniLM-L6-v2'
 OUTPUTS_PATH = Path("outputs/")
@@ -31,8 +32,9 @@ def load_tripadvisor_data(test: bool = DEFAULT_TEST) -> Iterator[str]:
 
 def calculate_embeddings(sentences: Iterator[str]) -> ArrayLike:
     """Uses sentence transformers to calculated emebeddings"""
-    model = SentenceTransformer(MODEL_NAME)
-    logging.info(f'Calculating {len(sentences)} embeddings')
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model = SentenceTransformer(MODEL_NAME, device=device)
+    logging.info(f'Calculating {len(sentences)} embeddings using device: {device}')
     return model.encode(sentences)
 
 
