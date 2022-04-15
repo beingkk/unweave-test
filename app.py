@@ -15,8 +15,10 @@ from pathlib import Path
 MODEL_NAME = 'paraphrase-MiniLM-L6-v2'
 OUTPUTS_PATH = Path("outputs/")
 OUTPUTS_PATH.mkdir(parents=True, exist_ok=True)
+# Default run mode (True for faster test mode)
+DEFAULT_TEST = True
 
-def load_tripadvisor_data(test: bool = False) -> Iterator[str]:
+def load_tripadvisor_data(test: bool = DEFAULT_TEST) -> Iterator[str]:
     """
     Loads test data, sourced from kaggle:
     https://www.kaggle.com/datasets/andrewmvd/trip-advisor-hotel-reviews
@@ -40,7 +42,7 @@ def save_outputs(output_array: ArrayLike, output_filename: str =  'embeddings.np
     np.save(OUTPUTS_PATH / output_filename, output_array)
 
     
-def main(test: bool = False):
+def main(test: bool = DEFAULT_TEST):
     """Complete pipeline that loads text data, calculates sentence embeddings and saves the array"""
     pipe(
         test,
